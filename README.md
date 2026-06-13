@@ -114,13 +114,6 @@ The vector database can be viewed directly in VS Code:
 1. Install extension: **SQLite Viewer** by `qwtel` (VS Code Marketplace)
 2. Open file: `chroma_db/chroma.sqlite3`
 
-Or via terminal:
-
-```bash
-chroma run --path chroma_db
-# Browser: http://localhost:8000
-```
-
 ---
 
 ## Dependencies
@@ -141,7 +134,7 @@ chroma run --path chroma_db
 🚧 **In development**
 
 - [x] ingest.py – PDF → ChromaDB (Ollama)
-- [ ] retriever.py – RAG chain
+- [x] retriever.py – RAG chain
 - [ ] main.py – FastAPI backend
 - [ ] frontend – Chat UI
 
