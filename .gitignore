@@ -4,11 +4,11 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Daten & Embeddings (nicht ins Repo)
+# Data & embeddings
 data/
 chroma_db/
 
-# Umgebungsvariablen
+# Environment variables
 .env
 
 # macOS
