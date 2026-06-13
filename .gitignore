@@ -1,0 +1,15 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Daten & Embeddings (nicht ins Repo)
+data/
+chroma_db/
+
+# Umgebungsvariablen
+.env
+
+# macOS
+.DS_Store
