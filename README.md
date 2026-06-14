@@ -80,7 +80,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install langchain langchain-community langchain-ollama pypdf chromadb fastapi uvicorn
+pip install langchain langchain-community langchain-ollama langchain-chroma pypdf chromadb fastapi uvicorn python-multipart
 ```
 
 ---
@@ -97,13 +97,16 @@ This loads the PDF, splits it into chunks, creates embeddings and stores everyth
 
 ---
 
-### 4. Start the Server *(coming soon)*
+### 4. Start the Server
+
+Make sure Ollama is running (`ollama serve`), then:
 
 ```bash
 uvicorn backend.main:app --reload
 ```
 
-Browser: `http://localhost:8000`
+Browser: `http://localhost:8000`  
+API docs: `http://localhost:8000/docs`
 
 ---
 
@@ -122,10 +125,12 @@ The vector database can be viewed directly in VS Code:
 |---|---|
 | `langchain` | RAG framework |
 | `langchain-community` | Loaders & vectorstore integrations |
-| `langchain-ollama` | Ollama integration |
+| `langchain-ollama` | Ollama LLM & embeddings integration |
+| `langchain-chroma` | ChromaDB vectorstore integration |
 | `pypdf` | PDF parsing |
 | `chromadb` | Vector database |
 | `fastapi` + `uvicorn` | Web server |
+| `python-multipart` | Required for FastAPI file uploads (PDF) |
 
 ---
 
@@ -135,7 +140,7 @@ The vector database can be viewed directly in VS Code:
 
 - [x] ingest.py – PDF → ChromaDB (Ollama)
 - [x] retriever.py – RAG chain
-- [ ] main.py – FastAPI backend
+- [x] main.py – FastAPI backend (`/upload` & `/chat`)
 - [ ] frontend – Chat UI
 
 ---
