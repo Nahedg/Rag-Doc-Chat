@@ -17,7 +17,7 @@
 | Component | Technology |
 |---|---|
 | Backend | Python, FastAPI |
-| AI / RAG | LangChain, Ollama (llama3.2) |
+| AI / RAG | LangChain, Ollama (llama3.1) |
 | Embeddings | Ollama (nomic-embed-text) |
 | Vector Database | ChromaDB |
 | Frontend | HTML, CSS, JavaScript |
@@ -57,7 +57,7 @@ brew install ollama
 Pull the required models:
 
 ```bash
-ollama pull llama3.2          # LLM for answers (~2GB)
+ollama pull llama3.1          # LLM for answers (~4.7GB, better quality)
 ollama pull nomic-embed-text  # Embeddings model (~274MB)
 ```
 
@@ -107,6 +107,20 @@ uvicorn backend.main:app --reload
 
 Browser: `http://localhost:8000`  
 API docs: `http://localhost:8000/docs`
+
+---
+
+## RAG Configuration
+
+The following settings are tuned for better retrieval accuracy:
+
+| Setting | Value | Reason |
+|---|---|---|
+| `chunk_size` | 300 | Smaller chunks = more precise retrieval |
+| `chunk_overlap` | 100 | Prevents important sentences from being cut off at chunk boundaries |
+| `search_type` | `mmr` | Maximal Marginal Relevance: picks diverse chunks, avoids redundancy |
+| `fetch_k` | 30 | Fetches 30 candidates from ChromaDB, then selects the best 8 |
+| `k` | 8 | Passes 8 diverse chunks as context to the LLM |
 
 ---
 
