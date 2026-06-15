@@ -19,8 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = "data"
-CHROMA_DIR = "chroma_db"
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+UPLOAD_DIR = os.path.join(PROJECT_DIR, "data")
+CHROMA_DIR = os.path.join(PROJECT_DIR, "chroma_db")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 embeddings = OllamaEmbeddings(model="nomic-embed-text")
@@ -51,6 +52,8 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
+    if not os.path.exists(CHROMA_DIR):
+        raise HTTPException(status_code=400, detail="No document uploaded yet. Please upload a PDF first.")
     vectorstore = Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
     retriever = vectorstore.as_retriever(
     search_type="mmr",
