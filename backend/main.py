@@ -38,7 +38,7 @@ async def upload(file: UploadFile = File(...)):
     # Load, split and store in ChromaDB
     loader = PyPDFLoader(pdf_path)
     pages = loader.load()
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=100)
     chunks = splitter.split_documents(pages)
     Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_DIR)
 
@@ -52,8 +52,11 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 async def chat(request: ChatRequest):
     vectorstore = Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-    llm = OllamaLLM(model="llama3.2")
+    retriever = vectorstore.as_retriever(
+    search_type="mmr",
+    search_kwargs={"k": 8, "fetch_k": 30}
+    )
+    llm = OllamaLLM(model="llama3.1")
     chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever

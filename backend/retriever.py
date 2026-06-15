@@ -7,11 +7,14 @@ vectorstore = Chroma(persist_directory="chroma_db", embedding_function=OllamaEmb
 print("ChromaDB loaded successfully")
 
 # Create retriever
-retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+retriever = vectorstore.as_retriever(
+    search_type="mmr",
+    search_kwargs={"k": 8, "fetch_k": 30}
+)
 print("Retriever created successfully")
 
 # RAG chain with Ollama LLM
-llm = OllamaLLM(model="llama3.2")
+llm = OllamaLLM(model="llama3.1")
 chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
 
 question = input("Your question: ")
