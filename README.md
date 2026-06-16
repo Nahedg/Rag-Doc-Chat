@@ -12,6 +12,7 @@
 - Answers with direct source attribution
 - Runs fully locally with Ollama (no API key needed)
 - Lightweight web interface
+- Active document shown in the left sidebar (persisted after refresh)
 
 ### Tech Stack
 | Component | Technology |
@@ -80,7 +81,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install langchain langchain-community langchain-ollama langchain-chroma pypdf chromadb fastapi uvicorn python-multipart
+pip install langchain langchain-community langchain-ollama langchain-chroma pypdf chromadb fastapi uvicorn python-multipart aiofiles
 ```
 
 ---
@@ -107,6 +108,16 @@ uvicorn backend.main:app --reload
 
 Browser: `http://localhost:8000`  
 API docs: `http://localhost:8000/docs`
+
+### 5. Use the Frontend
+
+Open `http://localhost:8000` and:
+
+1. Upload one PDF file
+2. Ask questions in the chat panel
+3. Check the left sidebar for the currently active document
+
+The active document name is stored in browser `localStorage`, so it remains visible after page refresh.
 
 ---
 
@@ -145,6 +156,7 @@ The vector database can be viewed directly in VS Code:
 | `chromadb` | Vector database |
 | `fastapi` + `uvicorn` | Web server |
 | `python-multipart` | Required for FastAPI file uploads (PDF) |
+| `aiofiles` | Required to serve frontend static files with FastAPI |
 
 ---
 
@@ -155,7 +167,7 @@ The vector database can be viewed directly in VS Code:
 - [x] ingest.py – PDF → ChromaDB (Ollama)
 - [x] retriever.py – RAG chain
 - [x] main.py – FastAPI backend (`/upload` & `/chat`)
-- [ ] frontend – Chat UI
+- [x] frontend – Chat UI with active document sidebar
 
 ---
 

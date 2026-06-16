@@ -2,6 +2,8 @@ import os
 import shutil
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -23,6 +25,13 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPLOAD_DIR = os.path.join(PROJECT_DIR, "data")
 CHROMA_DIR = os.path.join(PROJECT_DIR, "chroma_db")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Serve frontend
+app.mount("/static", StaticFiles(directory=os.path.join(PROJECT_DIR, "frontend")), name="static")
+
+@app.get("/")
+def root():
+    return FileResponse(os.path.join(PROJECT_DIR, "frontend", "index.html"))
 
 embeddings = OllamaEmbeddings(model="nomic-embed-text")
 
